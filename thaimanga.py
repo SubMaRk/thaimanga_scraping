@@ -21,11 +21,11 @@ main_url = "https://www.thaimanga.net/manga-list/"
 show_url = "?show="
 variations = ["."] + ["0-9"] + [chr(i) for i in range(ord("A"), ord("Z") + 1)]
 
-def download_with_retry(url, destination):
+def download_with_retry(url, destination, timeout=10):
     max_retries = 5
     for i in range(max_retries):
         try:
-            response = rq.get(url, stream=True)
+            response = rq.get(url, stream=True, timeout=timeout)
             response.raise_for_status()
             with open(destination, "wb") as file:
                 for chunk in response.iter_content(1024):
@@ -34,6 +34,8 @@ def download_with_retry(url, destination):
             break
         except (rq.exceptions.ChunkedEncodingError, IncompleteRead, rq.exceptions.RequestException) as e:
             print(f"Error downloading {url}. Retry {i + 1}/{max_retries}")
+        except rq.exceptions.Timeout as e:
+            print(f"Timeout error downloading {url}. Retry {i + 1}/{max_retries}")
         except Exception as e:
             print(f"Error downloading {url}: {e}")
             break
