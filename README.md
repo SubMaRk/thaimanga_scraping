@@ -9,3 +9,4 @@ This script made for scraping data and image for Manga, Manhua and Manhwa from T
 - save data of manga, manghwa and manhua to data\{manga}.txt for better work when run this script in next time ex. data\{manga_data}.txt.
 - can fetch chapter continue from last running. (when you want to update them.)
 - skip files and chapter links have been visited.
+- support multi-thread fetching manga (limit to 4 thhreads).
